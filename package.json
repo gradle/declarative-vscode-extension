@@ -10,16 +10,24 @@
     "Programming Languages"
   ],
   "contributes": {
-    "languages": [{
-      "id": "gradle-dcl",
-      "aliases": ["Declarative Gradle", "gradle-dcl"],
-      "extensions": [".gradle.dcl"],
-      "configuration": "./language-configuration.json"
-    }],
-    "grammars": [{
-      "language": "gradle-dcl",
-      "scopeName": "source.gradle",
-      "path": "./syntaxes/gradle-dcl.tmLanguage.json"
-    }]
+    "languages": [
+      {
+        "id": "gradle-dcl",
+        "aliases": [
+          "Declarative Gradle"
+        ],
+        "extensions": [
+          ".gradle.dcl"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "gradle-dcl",
+        "scopeName": "source.gradle",
+        "path": "./syntaxes/gradle-dcl.tmLanguage.json"
+      }
+    ]
   }
 }
