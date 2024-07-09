@@ -1,0 +1,25 @@
+{
+  "name": "declarative-gradle-syntax",
+  "displayName": "Declarative Gradle Syntax",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.91.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "gradle-dcl",
+      "aliases": ["Declarative Gradle", "gradle-dcl"],
+      "extensions": [".gradle.dcl"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "gradle-dcl",
+      "scopeName": "source.gradle",
+      "path": "./syntaxes/gradle-dcl.tmLanguage.json"
+    }]
+  }
+}
