@@ -1,32 +1,130 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "Declarative Gradle",
-	"patterns": [
-		{
-			"include": "#keywords"
-		},
-		{
-			"include": "#strings"
-		}
-	],
-	"repository": {
-		"keywords": {
-			"patterns": [{
-				"name": "keyword.control.gradle-dcl",
-				"match": "\\b(if|while|for|return)\\b"
-			}]
-		},
-		"strings": {
-			"name": "string.quoted.double.gradle-dcl",
-			"begin": "\"",
-			"end": "\"",
-			"patterns": [
-				{
-					"name": "constant.character.escape.gradle-dcl",
-					"match": "\\\\."
-				}
-			]
-		}
-	},
-	"scopeName": "source.gradle"
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Declarative Gradle",
+  "scopeName": "source.gradle.dcl",
+  "patterns": [
+    {
+      "include": "#namedBlock"
+    },
+    {
+      "include": "#comment"
+    }
+  ],
+  "repository": {
+    "comment": {
+      "patterns": [
+        {
+          "match": "//.*$",
+          "name": "comment.line.double-slash.gradle-dcl"
+        },
+        {
+          "begin": "/\\*",
+          "end": "\\*/",
+          "name": "comment.block.gradle-dcl"
+        }
+      ]
+    },
+    "constant": {
+      "patterns": [
+        {
+          "begin": "'",
+          "end": "'",
+          "name": "string.quoted.single.gradle-dcl",
+          "patterns": [
+            {
+              "match": "\\.",
+              "name": "constant.character.escape.gradle-dcl"
+            }
+          ]
+        },
+        {
+          "begin": "\"",
+          "end": "\"",
+          "name": "string.quoted.double.gradle-dcl"
+        },
+        {
+          "match": "\\b(true|false)\\b",
+          "name": "constant.language.gradle-dcl"
+        },
+        {
+          "match": "\\b([0-9]+)\\b",
+          "name": "constant.numeric.gradle-dcl"
+        }
+      ]
+    },
+    "functions": {
+      "patterns": [
+        {
+          "name": "support.function",
+          "begin": "\\b([a-zA-Z][a-zA-Z0-9]*)\\s*\\(",
+          "beginCaptures": {
+            "1": {
+              "name": "entity.name.function.gradle-dcl"
+            }
+          },
+          "end": "\\)",
+          "patterns": [
+            {
+              "include": "#constant"
+            },
+            {
+              "match": "[a-zA-Z][a-zA-Z0-9]*",
+              "name": "variable.parameter.gradle-dcl"
+            },
+            {
+              "match": ",",
+              "name": "punctuation.separator.gradle-dcl"
+            }
+          ]
+        }
+      ]
+    },
+    "assignment": {
+      "name": "keyword.operator.assignment.gradle-dcl",
+      "match": "\\b([a-zA-Z][a-zA-Z0-9_]*)\\s*=\\s*([0-9]+|\\S+)",
+      "captures": {
+        "1": {
+          "name": "variable.name.gradle-dcl"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#constant"
+            }
+          ]
+        }
+      }
+    },
+    "namedBlock": {
+      "patterns": [
+        {
+          "name": "entity.gradle-dcl",
+          "begin": "\\b([a-zA-Z][a-zA-Z0-9]*)\\s*\\{",
+          "beginCaptures": {
+            "1": {
+              "name": "entity.name.tag.gradle-dcl"
+            }
+          },
+          "end": "\\}",
+          "patterns": [
+            {
+              "include": "#comment"
+            },
+            {
+              "include": "#constant"
+            },
+            {
+              "include": "#functions"
+            },
+            {
+              "include": "#assignment"
+            },
+            {
+              "include": "#namedBlock"
+            }
+          ]
+        }
+      ]
+    }
+  }
 }
