@@ -1,6 +1,6 @@
 {
-  "name": "declarative-gradle-syntax",
-  "displayName": "Declarative Gradle Syntax",
+  "name": "declarative-gradle-support",
+  "displayName": "Declarative Gradle Support",
   "description": "",
   "version": "0.0.1",
   "engines": {
@@ -19,13 +19,17 @@
         "extensions": [
           ".gradle.dcl"
         ],
+        "icon": {
+          "light": "./icons/gradle-dcl.svg",
+          "dark": "./icons/gradle-dcl.svg"
+        },
         "configuration": "./language-configuration.json"
       }
     ],
     "grammars": [
       {
         "language": "gradle-dcl",
-        "scopeName": "source.gradle",
+        "scopeName": "source.gradle.dcl",
         "path": "./syntaxes/gradle-dcl.tmLanguage.json"
       }
     ]
