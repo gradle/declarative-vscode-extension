@@ -4,10 +4,19 @@
   "scopeName": "source.gradle.dcl",
   "patterns": [
     {
-      "include": "#namedBlock"
+      "include": "#block"
     },
     {
       "include": "#comment"
+    },
+    {
+      "include": "#constant"
+    },
+    {
+      "include": "#function"
+    },
+    {
+      "include": "#assignment"
     }
   ],
   "repository": {
@@ -24,39 +33,99 @@
         }
       ]
     },
-    "constant": {
+    "escape": {
       "patterns": [
         {
-          "begin": "'",
-          "end": "'",
-          "name": "string.quoted.single.gradle-dcl",
-          "patterns": [
-            {
-              "match": "\\.",
-              "name": "constant.character.escape.gradle-dcl"
-            }
-          ]
-        },
-        {
-          "begin": "\"",
-          "end": "\"",
-          "name": "string.quoted.double.gradle-dcl"
-        },
-        {
-          "match": "\\b(true|false)\\b",
-          "name": "constant.language.gradle-dcl"
-        },
+          "match": "\\\\(t|r|n|f|b|\\\"|\\\\)",
+          "name": "constant.character.escape.gradle-dcl"
+        }
+      ]
+    },
+    "numeric": {
+      "patterns": [
         {
           "match": "\\b([0-9]+)\\b",
           "name": "constant.numeric.gradle-dcl"
         }
       ]
     },
-    "functions": {
+    "character": {
+      "patterns": [
+        {
+          "match": "'\\\\?.'",
+          "name": "string.quoted.single.gradle-dcl",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#escape",
+                  "name": "constant.character.escape.gradle-dcl"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "string": {
+      "$comment": [
+        ""
+      ],
+      "patterns": [
+        {
+          "name": "string.quoted.triple.gradle-dcl",
+          "begin": "\"\"\"",
+          "end": "\"\"\"",
+          "patterns": [
+            {
+              "include": "#escape"
+            }
+          ]
+        },
+        {
+          "match": "\".*\"",
+          "name": "string.quoted.double.gradle-dcl",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#escape"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "boolean": {
+      "patterns": [
+        {
+          "match": "\\b(true|false)\\b",
+          "name": "constant.language.gradle-dcl"
+        }
+      ]
+    },
+    "constant": {
+      "patterns": [
+        {
+          "include": "#numeric"
+        },
+        {
+          "include": "#character"
+        },
+        {
+          "include": "#string"
+        },
+        {
+          "include": "#boolean"
+        }
+      ]
+    },
+    "function": {
       "patterns": [
         {
           "name": "support.function",
-          "begin": "\\b([a-zA-Z][a-zA-Z0-9]*)\\s*\\(",
+          "begin": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(",
           "beginCaptures": {
             "1": {
               "name": "entity.name.function.gradle-dcl"
@@ -66,6 +135,9 @@
           "patterns": [
             {
               "include": "#constant"
+            },
+            {
+              "include": "#function"
             },
             {
               "match": "[a-zA-Z][a-zA-Z0-9]*",
@@ -90,16 +162,19 @@
           "patterns": [
             {
               "include": "#constant"
+            },
+            {
+              "include": "#function"
             }
           ]
         }
       }
     },
-    "namedBlock": {
+    "block": {
       "patterns": [
         {
           "name": "entity.gradle-dcl",
-          "begin": "\\b([a-zA-Z][a-zA-Z0-9]*)\\s*\\{",
+          "begin": "\\b([a-zA-Z][a-zA-Z0-9]*)?\\s*\\{",
           "beginCaptures": {
             "1": {
               "name": "entity.name.tag.gradle-dcl"
@@ -108,19 +183,7 @@
           "end": "\\}",
           "patterns": [
             {
-              "include": "#comment"
-            },
-            {
-              "include": "#constant"
-            },
-            {
-              "include": "#functions"
-            },
-            {
-              "include": "#assignment"
-            },
-            {
-              "include": "#namedBlock"
+              "include": "$base"
             }
           ]
         }
