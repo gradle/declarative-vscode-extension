@@ -3,13 +3,17 @@
   "displayName": "Declarative Gradle Support",
   "description": "",
   "version": "0.0.1",
-  "repository": "https://github.com/gradle/declarative-gradle-vscode-extension",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gradle/declarative-vscode-extension"
+  },
   "engines": {
     "vscode": "^1.91.0"
   },
   "categories": [
     "Programming Languages"
   ],
+  "main": "./out/extension.js",
   "contributes": {
     "languages": [
       {
@@ -33,6 +37,34 @@
         "scopeName": "source.gradle.dcl",
         "path": "./syntaxes/gradle-dcl.tmLanguage.json"
       }
+    ],
+    "configuration": [
+      {
+        "type": "object",
+        "title": "Gradle Declarative",
+        "properties": {
+          "gradle.declarative.javaHome": {
+            "type": "string",
+            "default": "",
+            "description": "The path to the Java home directory."
+          }
+        }
+      }
     ]
+  },
+  "activationEvents": [
+    "workspaceContains:**/*.gradle.dcl"
+  ],
+  "dependencies": {
+    "@types/vscode": "^1.91.0",
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@typescript-eslint/eslint-plugin": "^7.16.0",
+    "@typescript-eslint/parser": "^7.16.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "typescript": "^5.5.3"
   }
 }
