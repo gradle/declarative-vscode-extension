@@ -1,28 +1,38 @@
-name: Package VSCode Extension
+name: Build and Package VS Code Extension
+
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
-  Package:
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "16"
+          cache: "npm"
 
-      - name: Install VSCE
-        run: npm install --no-save @vscode/vsce
+      - name: Install dependencies
+        run: npm install
 
-      - name: Package extension
-        run: npx @vscode/vsce package
+      - name: Compile TypeScript
+        run: npm run compile
 
-      - name: Archive artifact
+      - name: Package Extension
+        run: npm run package
+
+      - name: Archive production artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: extension
+          name: vscode-extension
           path: "*.vsix"
