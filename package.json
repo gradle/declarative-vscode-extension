@@ -3,6 +3,7 @@
   "displayName": "Declarative Gradle Support",
   "description": "",
   "version": "0.0.1",
+  "publisher": "Gradle",
   "repository": {
     "type": "git",
     "url": "https://github.com/gradle/declarative-vscode-extension"
