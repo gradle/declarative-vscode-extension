@@ -19,7 +19,7 @@ jobs:
         run: npm install --no-save @vscode/vsce
 
       - name: Package extension
-        run: npx vsce package
+        run: npx @vscode/vsce package
 
       - name: Archive artifact
         uses: actions/upload-artifact@v4
