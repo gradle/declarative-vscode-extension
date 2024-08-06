@@ -1,6 +1,5 @@
 import * as fs from "fs";
-import path = require("path");
-import { workspace, ExtensionContext } from "vscode";
+import { workspace } from "vscode";
 
 import {
   LanguageClient,
