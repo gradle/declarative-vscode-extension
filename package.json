@@ -46,8 +46,11 @@
         "properties": {
           "gradle.declarative.javaHome": {
             "type": "string",
-            "default": "",
             "description": "The path to the Java home directory."
+          },
+          "gradle.declarative.lspJar": {
+            "type": "string",
+            "description": "The path to the LSP jar file."
           }
         }
       }

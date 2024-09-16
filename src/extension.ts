@@ -1,3 +1,4 @@
+import { on } from "events";
 import * as fs from "fs";
 import { workspace } from "vscode";
 
@@ -20,32 +21,53 @@ function checkJavaHome(javaHome: string): string {
   return `${javaHome}/bin/java`;
 }
 
-export function activate() {
-  // Get the `gradle.declarative.javaHome` configuration value
-  const javaHome = workspace
-    .getConfiguration("gradle.declarative")
-    .get("javaHome") as string;
-  const javaExecutable = checkJavaHome(javaHome);
-  console.log(`Java executable used: ${javaExecutable}`);
+function checkLspJar(lspJar: string): string {
+  if (lspJar === undefined) {
+    throw new Error("LSP JAR path is not set");
+  } else if (!fs.existsSync(lspJar)) {
+    throw new Error(`LSP JAR path does not exist: ${lspJar}`);
+  }
 
-  // Read the ../declarative-lsp/lsp/build/runtime-classpath.txt file
-  const classpath = fs.readFileSync(
-    "/Users/bhegyi/Developer/Coding/declarative-lsp/lsp/build/runtime-classpath.txt",
-    "utf8"
+  return lspJar;
+}
+
+export function deactivate() {
+  if (!client) {
+    return undefined;
+  }
+  return client.stop();
+}
+
+export function activate() {
+  workspace.onDidChangeConfiguration((event) => {
+    if (event.affectsConfiguration("gradle.declarative")) {
+      deactivate();
+      activate();
+    }
+  });
+
+  const javaHome = checkJavaHome(
+    workspace.getConfiguration("gradle.declarative").get("javaHome") as string
+  );
+  const lspJar = checkLspJar(
+    workspace.getConfiguration("gradle.declarative").get("lspJar") as string
   );
 
+  startClient(javaHome, lspJar);
+}
+
+function startClient(javaExecutable: string, lspJarPath: string) {
   const serverOptions: ServerOptions = {
     run: {
       command: javaExecutable,
-      args: ["-cp", classpath, "org.gradle.declarative.lsp.MainKt"],
+      args: ["-jar", lspJarPath],
     },
     debug: {
       command: javaExecutable,
       args: [
         "-agentlib:jdwp=transport=dt_socket,server=n,address=localhost:5015,suspend=y",
-        "-cp",
-        classpath,
-        "org.gradle.declarative.lsp.MainKt",
+        "-jar",
+        lspJarPath,
       ],
     },
   };
@@ -62,11 +84,4 @@ export function activate() {
   );
 
   client.start();
-}
-
-export function deactivate() {
-  if (!client) {
-    return undefined;
-  }
-  return client.stop();
 }
