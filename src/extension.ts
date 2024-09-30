@@ -1,5 +1,7 @@
 import * as fs from "fs";
 import * as vscode from "vscode";
+import * as path from 'path';
+import {exec} from 'child_process';
 
 import {
   LanguageClient,
@@ -10,7 +12,7 @@ import { handleMutationAction as handleApplyMutation } from "./mutations";
 
 let client: LanguageClient;
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   vscode.workspace.onDidChangeConfiguration((event) => {
     if (event.affectsConfiguration("gradle.declarative")) {
       deactivate();
@@ -18,29 +20,43 @@ export function activate(context: vscode.ExtensionContext) {
     }
   });
 
-  startClient();
+  await startClient(context);
   registerCommands(context);
 }
 
-function checkJavaHome(javaHome: string): string {
-  if (!fs.existsSync(javaHome)) {
-    throw new Error(`Java home path does not exist: ${javaHome}`);
-  }
-  if (!fs.existsSync(`${javaHome}/bin/java`)) {
-    throw new Error(`Java binary does not exist: ${javaHome}/bin/java`);
+async function getJavaExec(): Promise<string> {
+  const userJavaHome = vscode.workspace.getConfiguration("gradle.declarative").get<string>("javaHome");
+  if (userJavaHome) {
+    const userJavaExec = path.join(userJavaHome, "bin", "java");
+    if (fs.existsSync(userJavaExec)) {
+      return userJavaExec;
+    }
   }
 
-  return `${javaHome}/bin/java`;
+  const locateJavaCommand = process.platform === 'win32' ? `where java` : `which java`;
+  const javaExecLocation = await new Promise<string | null>((resolve) => {
+    exec(locateJavaCommand, (error, stdout) => {
+      if (error) {
+        resolve(null)
+      } else {
+        resolve(stdout.trim())
+      }
+    });
+  })
+  if (javaExecLocation) {
+    return javaExecLocation;
+  }
+
+  throw new Error(`Java executable not found. Please either have a 'java' executable on PATH or set the 'gradle.declarative.javaHome' configuration.`);
 }
 
-function checkLspJar(lspJar: string): string {
-  if (lspJar === undefined) {
-    throw new Error("LSP JAR path is not set");
-  } else if (!fs.existsSync(lspJar)) {
-    throw new Error(`LSP JAR path does not exist: ${lspJar}`);
+function getLspJar(context: vscode.ExtensionContext): string {
+  const userLspJar = vscode.workspace.getConfiguration("gradle.declarative").get<string>("lspJar");
+  if (userLspJar) {
+    return userLspJar;
   }
 
-  return lspJar;
+  return path.join(context.extensionPath, "libs", "lsp-all.jar");
 }
 
 function registerCommands(context: vscode.ExtensionContext) {
@@ -51,17 +67,9 @@ function registerCommands(context: vscode.ExtensionContext) {
   context.subscriptions.push(registerCommandDisposable);
 }
 
-function startClient() {
-  const javaExecutable = checkJavaHome(
-    vscode.workspace
-      .getConfiguration("gradle.declarative")
-      .get("javaHome") as string
-  );
-  const lspJarPath = checkLspJar(
-    vscode.workspace
-      .getConfiguration("gradle.declarative")
-      .get("lspJar") as string
-  );
+async function startClient(context: vscode.ExtensionContext) {
+  const javaExecutable = await getJavaExec();
+  const lspJarPath = getLspJar(context);
 
   const serverOptions: ServerOptions = {
     run: {
@@ -71,7 +79,7 @@ function startClient() {
     debug: {
       command: javaExecutable,
       args: [
-        "-agentlib:jdwp=transport=dt_socket,server=n,address=localhost:5015,suspend=n",
+        //"-agentlib:jdwp=transport=dt_socket,server=n,address=localhost:5015,suspend=n",
         "-jar",
         lspJarPath,
       ],

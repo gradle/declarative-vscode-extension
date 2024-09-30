@@ -46,21 +46,33 @@
         "properties": {
           "gradle.declarative.javaHome": {
             "type": "string",
-            "description": "The path to the Java home directory."
+            "default": "",
+            "markdownDescription": "Optional path to the Java home directory. Otherwise, the `java` executable on `PATH` is used."
           },
           "gradle.declarative.lspJar": {
             "type": "string",
-            "description": "The path to the LSP jar file."
+            "default": "",
+            "markdownDescription": "Optional path to the LSP Jar file. If not provided, the extension will use the bundled one."
           }
         }
       }
     ]
   },
+  "files": [
+    "out",
+    "libs",
+    "syntaxes",
+    "icons",
+    "language-configuration.json",
+    "package.json",
+    "README.md"
+  ],
   "activationEvents": [
     "workspaceContains:**/*.gradle.dcl"
   ],
   "scripts": {
-    "compile": "tsc -p .",
+    "prebuild": "node scripts/prebuild.mjs",
+    "build": "tsc -p .",
     "package": "vsce package"
   },
   "dependencies": {

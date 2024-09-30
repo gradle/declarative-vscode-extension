@@ -2,6 +2,14 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "type": "npm",
+      "script": "prebuild",
+      "group": {
+        "kind": "build",
+      },
+      "label": "prebuild"
+    },
+    {
       "type": "typescript",
       "tsconfig": "tsconfig.json",
       "problemMatcher": [
@@ -11,7 +19,10 @@
         "kind": "build",
         "isDefault": true
       },
-      "label": "tsc: build - tsconfig.json"
+      "dependsOn": [
+        "prebuild"
+      ],
+      "label": "build"
     }
   ]
 }
