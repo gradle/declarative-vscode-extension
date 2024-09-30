@@ -1,0 +1,18 @@
+{
+	"name": "Node.js & TypeScript",
+	"image": "mcr.microsoft.com/vscode/devcontainers/javascript-node:22-bookworm",
+	"features": {
+		"ghcr.io/devcontainers/features/java:1": {
+			"version": "17"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				// We don't need the whole Java pack, just our extension
+				"-vscjava.vscode-java-pack"
+			]
+		}
+	},
+	"postCreateCommand": "git clone https://github.com/gradle/declarative-gradle /home/node/declarative-gradle"
+}
