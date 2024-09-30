@@ -1,14 +1,26 @@
-import { on } from "events";
 import * as fs from "fs";
-import { workspace } from "vscode";
+import * as vscode from "vscode";
 
 import {
   LanguageClient,
   LanguageClientOptions,
   ServerOptions,
 } from "vscode-languageclient/node";
+import { handleMutationAction as handleApplyMutation } from "./mutations";
 
 let client: LanguageClient;
+
+export function activate(context: vscode.ExtensionContext) {
+  vscode.workspace.onDidChangeConfiguration((event) => {
+    if (event.affectsConfiguration("gradle.declarative")) {
+      deactivate();
+      activate(context);
+    }
+  });
+
+  startClient();
+  registerCommands(context);
+}
 
 function checkJavaHome(javaHome: string): string {
   if (!fs.existsSync(javaHome)) {
@@ -31,32 +43,26 @@ function checkLspJar(lspJar: string): string {
   return lspJar;
 }
 
-export function deactivate() {
-  if (!client) {
-    return undefined;
-  }
-  return client.stop();
+function registerCommands(context: vscode.ExtensionContext) {
+  const registerCommandDisposable = vscode.commands.registerCommand(
+    "gradle-dcl.applyMutation",
+    (args) => handleApplyMutation(client, args)
+  );
+  context.subscriptions.push(registerCommandDisposable);
 }
 
-export function activate() {
-  workspace.onDidChangeConfiguration((event) => {
-    if (event.affectsConfiguration("gradle.declarative")) {
-      deactivate();
-      activate();
-    }
-  });
-
-  const javaHome = checkJavaHome(
-    workspace.getConfiguration("gradle.declarative").get("javaHome") as string
+function startClient() {
+  const javaExecutable = checkJavaHome(
+    vscode.workspace
+      .getConfiguration("gradle.declarative")
+      .get("javaHome") as string
   );
-  const lspJar = checkLspJar(
-    workspace.getConfiguration("gradle.declarative").get("lspJar") as string
+  const lspJarPath = checkLspJar(
+    vscode.workspace
+      .getConfiguration("gradle.declarative")
+      .get("lspJar") as string
   );
 
-  startClient(javaHome, lspJar);
-}
-
-function startClient(javaExecutable: string, lspJarPath: string) {
   const serverOptions: ServerOptions = {
     run: {
       command: javaExecutable,
@@ -65,7 +71,7 @@ function startClient(javaExecutable: string, lspJarPath: string) {
     debug: {
       command: javaExecutable,
       args: [
-        "-agentlib:jdwp=transport=dt_socket,server=n,address=localhost:5015,suspend=y",
+        "-agentlib:jdwp=transport=dt_socket,server=n,address=localhost:5015,suspend=n",
         "-jar",
         lspJarPath,
       ],
@@ -74,6 +80,7 @@ function startClient(javaExecutable: string, lspJarPath: string) {
 
   const clientOptions: LanguageClientOptions = {
     documentSelector: [{ scheme: "file", language: "gradle-dcl" }],
+    progressOnInitialization: true,
   };
 
   client = new LanguageClient(
@@ -84,4 +91,11 @@ function startClient(javaExecutable: string, lspJarPath: string) {
   );
 
   client.start();
+}
+
+export function deactivate() {
+  if (!client) {
+    return undefined;
+  }
+  return client.stop();
 }
