@@ -26,7 +26,7 @@ jobs:
         run: npm install
 
       - name: Compile TypeScript
-        run: npm run compile
+        run: npm run build
 
       - name: Package Extension
         run: npm run package
