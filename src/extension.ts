@@ -89,6 +89,11 @@ async function startClient(context: vscode.ExtensionContext) {
   const clientOptions: LanguageClientOptions = {
     documentSelector: [{ scheme: "file", language: "gradle-dcl" }],
     progressOnInitialization: true,
+    initializationOptions: {
+      // If we are running on a fresh setup, Gradle can take significant time to initialize
+      // Timeout is increased therefore to 5 minutes
+      timeout: 5 * 60 * 1000,
+    },
   };
 
   client = new LanguageClient(
