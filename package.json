@@ -59,13 +59,11 @@
     ]
   },
   "files": [
-    "out",
-    "libs",
-    "syntaxes",
-    "icons",
-    "language-configuration.json",
-    "package.json",
-    "README.md"
+    "out/*",
+    "libs/*",
+    "syntaxes/*",
+    "icons/*",
+    "language-configuration.json"
   ],
   "activationEvents": [
     "workspaceContains:**/*.gradle.dcl"
