@@ -14,5 +14,5 @@
 			]
 		}
 	},
-	"postCreateCommand": "git clone https://github.com/gradle/declarative-gradle /home/node/declarative-gradle"
+	"postCreateCommand": ".devcontainer/postCreateCommand.sh"
 }
