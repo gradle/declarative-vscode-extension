@@ -1,4 +1,8 @@
+# Project
 node_modules/
 out/
 libs/
 *.vsix
+
+# macOS
+.DS_Store

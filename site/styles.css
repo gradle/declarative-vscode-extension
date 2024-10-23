@@ -1,0 +1,43 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Lato', sans-serif;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    width: 100%;
+    padding: 1rem;
+
+    background-color: #f7f7f8;
+    border-bottom: 2px solid #eaeaea;
+}
+
+#gradle-logo {
+    height: 3rem;
+}
+
+main {
+    flex: 1;
+    height: 100%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#download-button {
+    padding: 1rem;
+    background-image: linear-gradient(135deg, #069fce, #51cbbf);
+    color: #eaeaea;
+    border: none;
+    border-radius: 5px;
+}
