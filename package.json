@@ -8,6 +8,7 @@
     "type": "git",
     "url": "https://github.com/gradle/declarative-vscode-extension"
   },
+  "license": "Apache-2.0",
   "engines": {
     "vscode": "^1.91.0"
   },
@@ -16,11 +17,10 @@
   ],
   "main": "./out/extension.js",
   "scripts": {
-    "prebuild": "node scripts/prebuild.mjs",
-    "build": "tsc -p .",
+    "build": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
     "lint": "eslint src/",
     "ls-package": "vsce ls --tree",
-    "package": "vsce package --pre-release"
   },
   "dependencies": {
     "@types/vscode": "^1.91.0",
@@ -29,7 +29,7 @@
   "devDependencies": {
     "@eslint/js": "^9.13.0",
     "@types/node": "^20.14.10",
-    "@vscode/vsce": "2.31.1",
+    "@vscode/vsce": "^3.2.0",
     "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
@@ -81,6 +81,7 @@
     ]
   },
   "files": [
+    "LICENSE.txt",
     "out/*",
     "libs/*",
     "syntaxes/*",

@@ -19,14 +19,27 @@ jobs:
           node-version: "latest"
           cache: "npm"
 
-      - run: npm install
+      # Check and build the extension
+      - run: npm ci
       - run: npm run prebuild
       - run: npm run build
       - run: npm run ls-package
-      - run: npm run package
 
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: vscode-extension
-          path: "*.vsix"
+      # Deploying the package to GitHub Pages
+      - run: mkdir _site
+      - run: npm install @vscode/vsce
+      - run: npx vsce package --pre-release --out _site/declarative-vscode-extension.vsix
+      - uses: actions/upload-pages-artifact@v3
+
+  deploy-pages:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{steps.deployment.outputs.page_url}}
+
+    steps:
+      - uses: actions/deploy-pages@v4
