@@ -51,7 +51,7 @@ async function getJavaExec(): Promise<string> {
   }
 
   throw new Error(
-    `Java executable not found. Please either have a 'java' executable on PATH or set the 'gradle.declarative.javaHome' configuration.`,
+    `Java executable not found. Please either have a 'java' executable on PATH or set the 'gradle.declarative.javaHome' configuration.`
   );
 }
 
@@ -69,7 +69,7 @@ function getLspJar(context: vscode.ExtensionContext): string {
 function registerCommands(context: vscode.ExtensionContext) {
   const registerCommandDisposable = vscode.commands.registerCommand(
     "gradle-dcl.applyMutation",
-    (args) => handleApplyMutation(client, args),
+    (args) => handleApplyMutation(client, args)
   );
   context.subscriptions.push(registerCommandDisposable);
 }
@@ -107,7 +107,7 @@ async function startClient(context: vscode.ExtensionContext) {
     "gradle-declarative",
     "Declarative Gradle",
     serverOptions,
-    clientOptions,
+    clientOptions
   );
 
   client.start();
