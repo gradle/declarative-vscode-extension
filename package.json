@@ -15,6 +15,26 @@
     "Programming Languages"
   ],
   "main": "./out/extension.js",
+  "scripts": {
+    "prebuild": "node scripts/prebuild.mjs",
+    "build": "tsc -p .",
+    "lint": "eslint src/",
+    "ls-package": "vsce ls --tree",
+    "package": "vsce package --pre-release"
+  },
+  "dependencies": {
+    "@types/vscode": "^1.91.0",
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "@types/node": "^20.14.10",
+    "@vscode/vsce": "2.31.1",
+    "eslint": "^9.13.0",
+    "globals": "^15.11.0",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^8.11.0"
+  },
   "contributes": {
     "languages": [
       {
@@ -67,24 +87,5 @@
   ],
   "activationEvents": [
     "workspaceContains:**/*.gradle.dcl"
-  ],
-  "scripts": {
-    "prebuild": "node scripts/prebuild.mjs",
-    "build": "tsc -p .",
-    "ls-package": "vsce ls --tree",
-    "package": "vsce package"
-  },
-  "dependencies": {
-    "@types/vscode": "^1.91.0",
-    "vscode-languageclient": "^9.0.1"
-  },
-  "devDependencies": {
-    "@vscode/vsce": "2.31.1",
-    "@types/node": "^20.14.10",
-    "@typescript-eslint/eslint-plugin": "^7.16.0",
-    "@typescript-eslint/parser": "^7.16.0",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "typescript": "^5.5.3"
-  }
+  ]
 }
