@@ -19,8 +19,7 @@
   "scripts": {
     "build": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "lint": "eslint src/",
-    "ls-package": "vsce ls --tree",
+    "lint": "eslint src/"
   },
   "dependencies": {
     "@types/vscode": "^1.91.0",

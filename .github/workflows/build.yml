@@ -23,11 +23,11 @@ jobs:
       - run: npm ci
       - run: npm run prebuild
       - run: npm run build
-      - run: npm run ls-package
 
       # Deploying the package to GitHub Pages
       - run: mkdir _site
       - run: npm install @vscode/vsce
+      - run: npx vsce ls --tree
       - run: npx vsce package --pre-release --out _site/declarative-vscode-extension.vsix
       - uses: actions/upload-pages-artifact@v3
 
