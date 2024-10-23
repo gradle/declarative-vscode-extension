@@ -21,7 +21,6 @@ jobs:
 
       # Check and build the extension
       - run: npm ci
-      - run: npm run prebuild
       - run: npm run build
 
       # Deploying the package to GitHub Pages
