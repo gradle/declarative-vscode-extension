@@ -30,7 +30,7 @@ interface MutationExecuteActionMutationParameter {
 
 export async function handleMutationAction(
   client: LanguageClient,
-  arg: MutationCodeActionParameter
+  arg: MutationCodeActionParameter,
 ) {
   // Get the URI of the file the command was invoked
   const executeMutationParams: MutationExecuteActionMutationParameter[] = [];
@@ -52,7 +52,7 @@ export async function handleMutationAction(
 }
 
 async function askMutationParameter(
-  arg: MutationCodeActionMutationParameter
+  arg: MutationCodeActionMutationParameter,
 ): Promise<MutationExecuteActionMutationParameter> {
   const userInput = await vscode.window.showInputBox({
     prompt: arg.description,

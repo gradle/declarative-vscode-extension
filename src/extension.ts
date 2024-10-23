@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as vscode from "vscode";
-import * as path from 'path';
-import {exec} from 'child_process';
+import * as path from "path";
+import { exec } from "child_process";
 
 import {
   LanguageClient,
@@ -25,7 +25,9 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 async function getJavaExec(): Promise<string> {
-  const userJavaHome = vscode.workspace.getConfiguration("gradle.declarative").get<string>("javaHome");
+  const userJavaHome = vscode.workspace
+    .getConfiguration("gradle.declarative")
+    .get<string>("javaHome");
   if (userJavaHome) {
     const userJavaExec = path.join(userJavaHome, "bin", "java");
     if (fs.existsSync(userJavaExec)) {
@@ -33,25 +35,30 @@ async function getJavaExec(): Promise<string> {
     }
   }
 
-  const locateJavaCommand = process.platform === 'win32' ? `where java` : `which java`;
+  const locateJavaCommand =
+    process.platform === "win32" ? `where java` : `which java`;
   const javaExecLocation = await new Promise<string | null>((resolve) => {
     exec(locateJavaCommand, (error, stdout) => {
       if (error) {
-        resolve(null)
+        resolve(null);
       } else {
-        resolve(stdout.trim())
+        resolve(stdout.trim());
       }
     });
-  })
+  });
   if (javaExecLocation) {
     return javaExecLocation;
   }
 
-  throw new Error(`Java executable not found. Please either have a 'java' executable on PATH or set the 'gradle.declarative.javaHome' configuration.`);
+  throw new Error(
+    `Java executable not found. Please either have a 'java' executable on PATH or set the 'gradle.declarative.javaHome' configuration.`,
+  );
 }
 
 function getLspJar(context: vscode.ExtensionContext): string {
-  const userLspJar = vscode.workspace.getConfiguration("gradle.declarative").get<string>("lspJar");
+  const userLspJar = vscode.workspace
+    .getConfiguration("gradle.declarative")
+    .get<string>("lspJar");
   if (userLspJar) {
     return userLspJar;
   }
@@ -62,7 +69,7 @@ function getLspJar(context: vscode.ExtensionContext): string {
 function registerCommands(context: vscode.ExtensionContext) {
   const registerCommandDisposable = vscode.commands.registerCommand(
     "gradle-dcl.applyMutation",
-    (args) => handleApplyMutation(client, args)
+    (args) => handleApplyMutation(client, args),
   );
   context.subscriptions.push(registerCommandDisposable);
 }
@@ -100,7 +107,7 @@ async function startClient(context: vscode.ExtensionContext) {
     "gradle-declarative",
     "Declarative Gradle",
     serverOptions,
-    clientOptions
+    clientOptions,
   );
 
   client.start();
