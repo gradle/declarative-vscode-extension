@@ -22,7 +22,7 @@ jobs:
       # Check and build the extension
       - run: npm ci
       - run: npm run build
-
+      - run: npm run bundle
       # Deploying the package to GitHub Pages
       - run: npm install @vscode/vsce
       - run: npx vsce ls --tree

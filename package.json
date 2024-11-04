@@ -15,21 +15,23 @@
   "categories": [
     "Programming Languages"
   ],
-  "main": "./out/extension.js",
+  "main": "./dist/extension.js",
   "scripts": {
     "prebuild": "node scripts/prebuild.mjs",
     "build": "tsc -p ./",
     "watch": "tsc -watch -p ./",
+    "bundle": "node esbuild.mjs",
     "lint": "eslint src/"
   },
   "dependencies": {
     "@types/vscode": "^1.91.0",
+    "@vscode/vsce": "^3.2.1",
     "vscode-languageclient": "^9.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
     "@types/node": "^20.14.10",
-    "@vscode/vsce": "^3.2.0",
+    "esbuild": "^0.24.0",
     "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
@@ -80,14 +82,6 @@
       }
     ]
   },
-  "files": [
-    "LICENSE.txt",
-    "out/*",
-    "libs/*",
-    "syntaxes/*",
-    "icons/*",
-    "language-configuration.json"
-  ],
   "activationEvents": [
     "workspaceContains:**/*.gradle.dcl"
   ]

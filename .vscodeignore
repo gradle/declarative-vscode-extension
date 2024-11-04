@@ -1,0 +1,21 @@
+# Extension-related code
+src/
+out/
+node_modules/
+*.tsbuildinfo
+*.vsix
+tsconfig.json
+esbuild.mjs
+eslint.config.mjs
+
+# Project-related code
+scripts/
+site/
+.vscode/
+.github/
+.devcontainer/
+.gitignore
+
+# OS
+.DS_Store
+Thumbs.db
