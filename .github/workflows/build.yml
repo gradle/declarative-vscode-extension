@@ -18,7 +18,8 @@ jobs:
         with:
           node-version: "latest"
           cache: "npm"
-
+      - name: Save current timestamp
+        run: echo "SHORT_SHA=$(echo ${GITHUB_SHA} | head -c 7)" >> $GITHUB_ENV
       # Check and build the extension
       - run: npm ci
       - run: npm run build
@@ -26,7 +27,10 @@ jobs:
       # Deploying the package to GitHub Pages
       - run: npm install @vscode/vsce
       - run: npx vsce ls --tree
-      - run: npx vsce package --pre-release --out site/declarative-gradle-support.vsix
+      - run: npx vsce package --pre-release --out site/declarative-gradle-support-$SHORT_SHA.vsix
+      - name: Template site.html with the current timestamp
+        run: sed -i "s/{{SHORT_SHA}}/${SHORT_SHA}/g" site/index.html
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site/
