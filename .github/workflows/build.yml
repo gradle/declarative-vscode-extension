@@ -26,7 +26,6 @@ jobs:
       - run: npm run bundle
       # Rolling the VSIX package
       - run: npm install @vscode/vsce
-      - run: npx vsce ls --tree
       - run: npx vsce package --pre-release --out site/declarative-gradle-support-$SHORT_SHA.vsix
       # Prepping and uploading the Pages site artifact
       - name: Template site.html with the current timestamp
