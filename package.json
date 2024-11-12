@@ -15,9 +15,8 @@
   "categories": [
     "Programming Languages"
   ],
-  "main": "./dist/extension.js",
+  "main": "./out/extension.js",
   "scripts": {
-    "prebuild": "node scripts/prebuild.mjs",
     "build": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "bundle": "node esbuild.mjs",

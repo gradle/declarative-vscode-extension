@@ -86,7 +86,7 @@ async function startClient(context: vscode.ExtensionContext) {
     debug: {
       command: javaExecutable,
       args: [
-        //"-agentlib:jdwp=transport=dt_socket,server=n,address=localhost:5015,suspend=n",
+        "-agentlib:jdwp=transport=dt_socket,server=n,address=localhost:5015,suspend=y",
         "-jar",
         lspJarPath,
       ],
