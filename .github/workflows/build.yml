@@ -22,7 +22,7 @@ jobs:
         run: echo "SHORT_SHA=$(echo ${GITHUB_SHA} | head -c 7)" >> $GITHUB_ENV
       # Check and build the extension
       - run: npm ci
-
+      - run: mkdir libs
       - run: curl https://gradle.github.io/declarative-lsp/lsp-all.jar -o libs/lsp-all.jar
       - run: npm run check
       - run: npm run lint
