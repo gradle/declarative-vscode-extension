@@ -23,7 +23,7 @@ jobs:
       # Check and build the extension
       - run: npm ci
       - run: npm run check
-      - run: num run lint
+      - run: npm run lint
       - run: npm run build
       # Rolling the VSIX package
       - run: npm install @vscode/vsce
