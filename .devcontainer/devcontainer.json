@@ -10,9 +10,13 @@
 		"vscode": {
 			"extensions": [
 				// We don't need the whole Java pack, just our extension
-				"-vscjava.vscode-java-pack"
+				"-vscjava.vscode-java-pack",
+				"esbenp.prettier-vscode"
 			]
 		}
 	},
+	"forwardPorts": [
+		5010 // Used for java debugging
+	],
 	"postCreateCommand": ".devcontainer/postCreateCommand.sh"
 }

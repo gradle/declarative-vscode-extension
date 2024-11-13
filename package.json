@@ -17,10 +17,9 @@
   ],
   "main": "./out/extension.js",
   "scripts": {
-    "build": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "bundle": "node esbuild.mjs",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "check": "tsc -p ./",
+    "build": "node esbuild.mjs"
   },
   "dependencies": {
     "@types/vscode": "^1.91.0",
