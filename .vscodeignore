@@ -1,6 +1,5 @@
 # Extension-related code
 src/
-out/
 node_modules/
 *.tsbuildinfo
 *.vsix
