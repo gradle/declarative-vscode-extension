@@ -18,7 +18,7 @@
   "main": "./out/extension.js",
   "scripts": {
     "lint": "eslint src/",
-    "check": "tsc -p ./",
+    "check": "tsc -p .",
     "build": "node esbuild.mjs"
   },
   "dependencies": {
