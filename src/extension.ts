@@ -120,6 +120,10 @@ async function startClient(context: vscode.ExtensionContext) {
       // If we are running on a fresh setup, Gradle can take significant time to initialize
       // Timeout is increased therefore to 5 minutes
       timeout: 5 * 60 * 1000,
+      declarativeFeatures: {
+        // We tell the LSP server that we support mutations
+        mutations: true,
+      },
     },
   }
 
