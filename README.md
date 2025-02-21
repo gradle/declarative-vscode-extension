@@ -12,7 +12,7 @@ This extension provides support for [Declarative Gradle](https://github.com/grad
 There are two ways to install the extension
 
 1.  Use the repository itself. Check out the code, open it up in VSCode, run `npm install`, and launch the `Extension` run configuration.
-1.  Install the extension from the VSIX artifact created by the [CI pipeline](https://github.com/gradle/declarative-vscode-extension/actions/workflows/build.yml)
+1.  Install the extension from [here](https://gradle.github.io/declarative-vscode-extension/)
 
 ### Configuration
 
